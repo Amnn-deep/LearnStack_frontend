@@ -12,6 +12,7 @@ export const ChatPage: React.FC = () => {
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); // collapsed by default
 
   // Load chats on component mount
   useEffect(() => {
@@ -151,20 +152,44 @@ export const ChatPage: React.FC = () => {
   };
 
   return (
-    <div className="h-screen flex">
-      <ChatSidebar
-        chats={chats}
-        currentChatId={currentChatId}
-        onSelectChat={handleSelectChat}
-        onNewChat={handleNewChat}
-        onDeleteChat={handleDeleteChat}
-      />
-      <ChatInterface
-        messages={messages}
-        onSendMessage={handleSendMessage}
-        isLoading={isLoading}
-      />
-      <ChatSidePanel />
+    <div className="h-screen flex relative">
+      {/* Collapse/expand button for mobile */}
+      <button
+        className="absolute top-2 left-2 z-30 md:hidden bg-gray-800 text-white rounded-full p-2 shadow-lg"
+        onClick={() => setIsSidebarCollapsed((v) => !v)}
+        aria-label={isSidebarCollapsed ? 'Show menu' : 'Hide menu'}
+      >
+        {isSidebarCollapsed ? (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+        )}
+      </button>
+      {/* Sidebar: overlays chat on mobile, static on desktop */}
+      <div
+        className={`fixed top-0 left-0 h-full z-20 bg-gray-900 transition-transform duration-200 w-64 md:static md:translate-x-0 ${isSidebarCollapsed ? '-translate-x-full md:translate-x-0' : 'translate-x-0'}`}
+        style={{ maxWidth: '16rem' }}
+      >
+        <ChatSidebar
+          chats={chats}
+          currentChatId={currentChatId}
+          onSelectChat={handleSelectChat}
+          onNewChat={handleNewChat}
+          onDeleteChat={handleDeleteChat}
+        />
+      </div>
+      {/* Main chat area always visible */}
+      <div className="flex-1 flex flex-col min-w-0">
+        <ChatInterface
+          messages={messages}
+          onSendMessage={handleSendMessage}
+          isLoading={isLoading}
+        />
+      </div>
+      {/* Hide right panel on mobile if collapsed */}
+      <div className="hidden md:block md:relative absolute right-0 top-0 h-full w-80 md:w-auto z-10 md:z-0 bg-white">
+        <ChatSidePanel />
+      </div>
     </div>
   );
 };
