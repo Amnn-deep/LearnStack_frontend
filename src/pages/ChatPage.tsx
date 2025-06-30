@@ -189,7 +189,7 @@ export const ChatPage: React.FC = () => {
         </div>
       </div>
       {/* Hide right panel on mobile if collapsed */}
-      <div className="hidden md:block md:relative absolute right-0 top-0 h-full w-80 md:w-auto z-10 md:z-0 bg-white">
+      <div className="hidden md:block md:relative absolute right-0 top-0 h-full w-80 md:w-auto z-10 md:z-0 bg-white hide-scrollbar overflow-y-auto"> {/* Hide scrollbar but keep scroll */}
         <ChatSidePanel />
       </div>
     </div>

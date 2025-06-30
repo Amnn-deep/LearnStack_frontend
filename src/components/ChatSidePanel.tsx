@@ -75,7 +75,7 @@ export const ChatSidePanel: React.FC = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-6 scrollbar-hide">
         <div className="mb-8">
           <h3 className="text-sm font-medium text-gray-900 mb-4">Quick Learning Actions</h3>
           <div className="space-y-3">

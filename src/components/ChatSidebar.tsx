@@ -41,7 +41,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
       </div>
 
       {/* Chat List */}
-      <div className="flex-1 overflow-y-auto p-2">
+      <div className="flex-1 overflow-y-auto p-2 hide-scrollbar"> {/* Hide scrollbar but keep scroll */}
         {chats.length === 0 ? (
           <div className="text-center text-gray-400 mt-8">
             <Brain className="w-12 h-12 mx-auto mb-3 opacity-50" />
@@ -84,7 +84,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
       </div>
 
       {/* User Info */}
-      <div className="p-4 border-t border-gray-700">
+      <div className="p-4 border-t border-gray-700 hide-scrollbar"> {/* Hide scrollbar if any, but keep scroll */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center">
