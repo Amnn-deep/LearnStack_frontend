@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Message } from '../types';
 import { Send, User, Brain } from 'lucide-react';
+import '../hideScrollbar.css';
 
 interface ChatInterfaceProps {
   messages: Message[];
@@ -37,76 +38,82 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   return (
     <div className="flex-1 flex flex-col bg-gray-50">
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-scroll p-4 scrollbar-hide">
-        {messages.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Brain className="w-8 h-8 text-white" />
+      <div className="flex-1 overflow-y-scroll p-4 hide-scrollbar">
+        <div className="max-w-4xl mx-auto space-y-6 h-full hide-scrollbar">
+          {messages.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Brain className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Start learning with AI
+              </h3>
+              <p className="text-gray-600">
+                Ask me anything about studies, homework, or creative projects!
+              </p>
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">Start learning with AI</h3>
-            <p className="text-gray-600">Ask me anything about studies, homework, or creative projects!</p>
-          </div>
-        ) : (
-          <div className="max-w-4xl mx-auto space-y-6">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex items-start space-x-3 ${
-                  message.isUser ? 'flex-row-reverse space-x-reverse' : ''
-                }`}
-              >
+          ) : (
+            <div className="max-w-4xl mx-auto space-y-6">
+              {messages.map((message) => (
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    message.isUser
-                      ? 'bg-gradient-to-r from-green-400 to-blue-500'
-                      : 'bg-gradient-to-r from-purple-500 to-pink-500'
+                  key={message.id}
+                  className={`flex items-start space-x-3 ${
+                    message.isUser ? 'flex-row-reverse space-x-reverse' : ''
                   }`}
                 >
-                  {message.isUser ? (
-                    <User className="w-4 h-4 text-white" />
-                  ) : (
-                    <Brain className="w-4 h-4 text-white" />
-                  )}
-                </div>
-                <div
-                  className={`max-w-3xl px-4 py-3 rounded-2xl ${
-                    message.isUser
-                      ? 'bg-blue-600 text-white ml-auto'
-                      : 'bg-white text-gray-800 shadow-sm border'
-                  }`}
-                >
-                  <p className="whitespace-pre-wrap">{message.text}</p>
-                  <p
-                    className={`text-xs mt-2 ${
-                      message.isUser ? 'text-blue-100' : 'text-gray-500'
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      message.isUser
+                        ? 'bg-gradient-to-r from-green-400 to-blue-500'
+                        : 'bg-gradient-to-r from-purple-500 to-pink-500'
                     }`}
                   >
-                    {message.timestamp.toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </p>
-                </div>
-              </div>
-            ))}
-            {/* Remove thinking/typing indicator */}
-            {/* {isLoading && (
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-                  <Brain className="w-4 h-4 text-white" />
-                </div>
-                <div className="bg-white text-gray-800 shadow-sm border px-4 py-3 rounded-2xl">
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    {message.isUser ? (
+                      <User className="w-4 h-4 text-white" />
+                    ) : (
+                      <Brain className="w-4 h-4 text-white" />
+                    )}
+                  </div>
+                  <div
+                    className={`max-w-3xl px-4 py-3 rounded-2xl ${
+                      message.isUser
+                        ? 'bg-blue-600 text-white ml-auto'
+                        : 'bg-white text-gray-800 shadow-sm border'
+                    }`}
+                  >
+                    <p className="whitespace-pre-wrap">{message.text}</p>
+                    <p
+                      className={`text-xs mt-2 ${
+                        message.isUser ? 'text-blue-100' : 'text-gray-500'
+                      }`}
+                    >
+                      {message.timestamp.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </p>
                   </div>
                 </div>
-              </div>
-            )} */}
-            <div ref={messagesEndRef} />
-          </div>
-        )}
+              ))}
+              {/* Remove thinking/typing indicator */}
+              {/* {isLoading && (
+                <div className="flex items-start space-x-3">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                    <Brain className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="bg-white text-gray-800 shadow-sm border px-4 py-3 rounded-2xl">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    </div>
+                  </div>
+                </div>
+              )} */}
+              <div ref={messagesEndRef} />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Input Area */}
@@ -132,7 +139,9 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </button>
           </div>
           <p className="text-xs text-gray-500 mt-2 text-center">
-            Learning with <span className="font-medium">{user?.username}</span> • Powered by LearnStack AI
+            Learning with{' '}
+            <span className="font-medium">{user?.username}</span> • Powered by
+            LearnStack AI
           </p>
         </form>
       </div>
