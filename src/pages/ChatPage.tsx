@@ -152,7 +152,7 @@ export const ChatPage: React.FC = () => {
   };
 
   return (
-    <div className="h-screen flex relative">
+    <div className="h-screen flex relative overflow-hidden"> {/* Prevent body scroll */}
       {/* Collapse/expand button for mobile */}
       <button
         className="absolute top-2 left-2 z-30 md:hidden bg-gray-800 text-white rounded-full p-2 shadow-lg"
@@ -179,12 +179,14 @@ export const ChatPage: React.FC = () => {
         />
       </div>
       {/* Main chat area always visible */}
-      <div className="flex-1 flex flex-col min-w-0">
-        <ChatInterface
-          messages={messages}
-          onSendMessage={handleSendMessage}
-          isLoading={isLoading}
-        />
+      <div className="flex-1 flex flex-col min-w-0 h-full"> {/* Ensure chat area fills height */}
+        <div className="flex-1 flex flex-col overflow-y-auto"> {/* Make only this area scrollable */}
+          <ChatInterface
+            messages={messages}
+            onSendMessage={handleSendMessage}
+            isLoading={isLoading}
+          />
+        </div>
       </div>
       {/* Hide right panel on mobile if collapsed */}
       <div className="hidden md:block md:relative absolute right-0 top-0 h-full w-80 md:w-auto z-10 md:z-0 bg-white">
