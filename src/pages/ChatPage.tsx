@@ -82,15 +82,19 @@ export const ChatPage: React.FC = () => {
   const handleDeleteChat = async (chatId: string) => {
     if (!user) return;
 
+    // Optimistically update UI
+    setChats(prevChats => prevChats.filter(chat => chat.id !== chatId));
+    if (currentChatId === chatId) {
+      handleNewChat();
+    }
+
     try {
       await api.deleteChat(chatId, user.token);
-      setChats(chats.filter(chat => chat.id !== chatId));
-      
-      if (currentChatId === chatId) {
-        handleNewChat();
-      }
+      // Optionally, reload chats from server here if needed
+      // await loadChats();
     } catch (error) {
       console.error('Failed to delete chat:', error);
+      // Optionally, revert UI or show error to user
     }
   };
 
