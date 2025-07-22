@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../services/api';
@@ -7,19 +8,19 @@ import { ChatInterface } from '../components/ChatInterface';
 import { ChatSidePanel } from '../components/ChatSidePanel';
 
 export const ChatPage: React.FC = () => {
-  const { user } = useAuth();
+  const { user, isLoading: isAuthLoading } = useAuth();
   const [chats, setChats] = useState<Chat[]>([]);
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); // collapsed by default
 
-  // Load chats on component mount
+  // Load chats on component mount, but only after auth is loaded
   useEffect(() => {
-    if (user) {
+    if (!isAuthLoading && user) {
       loadChats();
     }
-  }, [user]);
+  }, [user, isAuthLoading]);
 
   const loadChats = async () => {
     if (!user) return;
@@ -154,6 +155,11 @@ export const ChatPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  if (isAuthLoading) {
+    // Optionally, show a loading spinner here
+    return null;
+  }
 
   return (
     <div className="h-screen flex relative overflow-hidden"> {/* Prevent body scroll */}
