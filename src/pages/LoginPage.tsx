@@ -14,17 +14,18 @@ export const LoginPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!username.trim()) {
       setError('Please enter a username');
       return;
     }
-
+    if (!password.trim()) {
+      setError('Please enter a password');
+      return;
+    }
     setIsLoading(true);
     setError('');
-
     try {
-      const response = await api.authenticate(username.trim());
+      const response = await api.authenticate(username.trim(), password.trim());
       login(username.trim(), response.access_token);
       navigate('/chat');
     } catch (err) {
