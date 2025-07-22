@@ -3,12 +3,17 @@ import { AuthResponse, ChatResponse, Chat } from '../types';
 const BASE_URL = 'https://learn-stack-backend.vercel.app';
 
 export const api = {
-  async authenticate(username: string): Promise<AuthResponse> {
-    const response = await fetch(`${BASE_URL}/auth/token?username=${encodeURIComponent(username)}`, {
+  async authenticate(username: string, password: string): Promise<AuthResponse> {
+    const response = await fetch(`${BASE_URL}/auth/token`, {
       method: 'POST',
       headers: {
+        'Content-Type': 'application/json',
         'accept': 'application/json',
       },
+      body: JSON.stringify({
+        username,
+        password
+      })
     });
 
     if (!response.ok) {
