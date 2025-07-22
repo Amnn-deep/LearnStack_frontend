@@ -147,7 +147,10 @@ export const ChatPage: React.FC = () => {
           );
         }
       );
-      loadChats();
+      // Only reload chats if user is still authenticated
+      if (user) {
+        loadChats();
+      }
     } catch (error) {
       setMessages(prev => prev.filter(msg => msg.id !== userMessage.id && msg.id !== botMessageId));
       console.error('Failed to send message:', error);
